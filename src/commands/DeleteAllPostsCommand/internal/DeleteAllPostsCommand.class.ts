@@ -24,6 +24,13 @@ export class DeleteAllPostsCommand extends BaseCommand {
 
   override async execute() {
     try {
+      if (this.#freeze) {
+        console.log(`Freezing account ${this.#targetUserId}...`);
+        void (await this.client.request('admin/suspend-user', {
+          userId: this.#targetUserId,
+        }));
+        console.log('Freeze account completed.');
+      }
       console.log(`Deleting all notes for user ${this.#targetUserId}...`);
       const notes = await this.client.request('users/notes', {
         userId: this.#targetUserId,
@@ -42,14 +49,6 @@ export class DeleteAllPostsCommand extends BaseCommand {
         userId: this.#targetUserId,
       }));
       console.log('All files are deleted.');
-
-      if (this.#freeze) {
-        console.log(`Freezing account ${this.#targetUserId}...`);
-        void (await this.client.request('admin/suspend-user', {
-          userId: this.#targetUserId,
-        }));
-        console.log('Freeze account completed.');
-      }
     } catch (error) {
       this.handleError(error as Error);
     }
