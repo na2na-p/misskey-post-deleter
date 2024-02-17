@@ -27,7 +27,6 @@ export class DeleteAllPostsCommand extends BaseCommand {
       console.log(`Deleting all notes for user ${this.#targetUserId}...`);
       const notes = await this.client.request('users/notes', {
         userId: this.#targetUserId,
-        withFiles: true,
         limit: 100,
       });
       const noteIds = notes.map(note => note.id);
