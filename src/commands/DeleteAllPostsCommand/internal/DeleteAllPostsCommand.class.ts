@@ -32,9 +32,10 @@ export class DeleteAllPostsCommand extends BaseCommand {
       });
       const noteIds = notes.map(note => note.id);
       for (const noteId of noteIds) {
-        await this.client.request('notes/delete', {
+        void (await new Promise(resolve => setTimeout(resolve, 500)));
+        void (await this.client.request('notes/delete', {
           noteId,
-        });
+        }));
       }
       console.log(`Notes delete completed.`);
 
